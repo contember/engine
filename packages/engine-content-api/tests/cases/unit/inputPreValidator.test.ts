@@ -3,16 +3,15 @@ import {
 	Dependencies,
 	InputPreValidator,
 	ValidationDataSelector,
-} from '../../../src/input-validation'
-import { InputValidation as v, SchemaBuilder, SchemaDefinition } from '@contember/schema-definition'
+} from '../../../src/input-validation/index.js'
+import { InputValidation as v, SchemaBuilder, SchemaDefinition, SchemaDefinition as def } from '@contember/schema-definition'
 import { Input, Model, Validation, Value } from '@contember/schema'
-import { EntityRulesResolver } from '../../../src'
+import { EntityRulesResolver } from '../../../src/index.js'
 import { getEntity } from '@contember/schema-utils'
-import { Mapper } from '../../../src/mapper'
-import { createMock } from '../../src/utils'
-import { testUuid } from '../../src/testUuid'
+import { Mapper } from '../../../src/mapper/index.js'
+import { createMock } from '../../src/utils.js'
+import { testUuid } from '../../src/testUuid.js'
 import { describe, it, assert } from 'vitest'
-import { SchemaDefinition as def } from '@contember/schema-definition'
 
 type PrimaryValueExpectation = { entity: string; where: Input.UniqueWhere; result: Value.PrimaryValue }
 type SelectExpectation = {

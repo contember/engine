@@ -1,13 +1,12 @@
-import { GraphQLInputObjectType, GraphQLString } from 'graphql'
+import { GraphQLInputFieldConfigMap, GraphQLInputObjectType, GraphQLString } from 'graphql'
 import { Input, Model } from '@contember/schema'
-import { GqlTypeName } from '../utils'
-import { WhereTypeProvider } from '../WhereTypeProvider'
-import { Accessor, Interface } from '../../utils'
-import { EntityInputProvider, EntityInputType } from './EntityInputProvider'
-import { GraphQLInputFieldConfigMap } from 'graphql/type/definition'
-import { CreateEntityRelationAllowedOperationsVisitor } from './CreateEntityRelationAllowedOperationsVisitor'
+import { GqlTypeName } from '../utils.js'
+import { WhereTypeProvider } from '../WhereTypeProvider.js'
+import { Accessor, Interface } from '../../utils/index.js'
+import { EntityInputProvider, EntityInputType } from './EntityInputProvider.js'
+import { CreateEntityRelationAllowedOperationsVisitor } from './CreateEntityRelationAllowedOperationsVisitor.js'
 import { acceptFieldVisitor } from '@contember/schema-utils'
-import { ImplementationException } from '../../exception'
+import { ImplementationException } from '../../exception.js'
 
 export class CreateEntityRelationInputFieldVisitor implements
 	Model.ColumnVisitor<never>,

@@ -1,8 +1,7 @@
-import { testMigrations } from '../../src/tests'
-import { SchemaBuilder } from '@contember/schema-definition'
+import { testMigrations } from '../../src/tests.js'
+import { SchemaBuilder, SchemaDefinition as def } from '@contember/schema-definition'
 import { Acl, Model } from '@contember/schema'
-import { SQL } from '../../src/tags'
-import { SchemaDefinition as def } from '@contember/schema-definition'
+import { SQL } from '../../src/tags.js'
 
 testMigrations('remove an entity', {
 	originalSchema: new SchemaBuilder()

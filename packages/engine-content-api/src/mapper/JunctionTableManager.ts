@@ -1,7 +1,6 @@
 import { getEntity } from '@contember/schema-utils'
-import { PathFactory } from './select'
-import { WhereBuilder } from './select'
-import { PredicateFactory } from '../acl'
+import { PathFactory, WhereBuilder } from './select/index.js'
+import { PredicateFactory } from '../acl/index.js'
 import {
 	Client,
 	ConflictActionType,
@@ -19,8 +18,8 @@ import {
 	MutationResult,
 	MutationResultList,
 	NothingToDoReason,
-} from './Result'
-import { ImplementationException } from '../exception'
+} from './Result.js'
+import { ImplementationException } from '../exception.js'
 
 type OkResultFactory = () => MutationJunctionUpdateOk
 

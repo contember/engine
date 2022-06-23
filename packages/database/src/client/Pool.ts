@@ -1,9 +1,9 @@
-import { ImplementationException } from '../exceptions'
-import { Client as PgClient } from 'pg'
-import { ClientErrorCodes } from './errorCodes'
+import { ImplementationException } from '../exceptions.js'
+import pg from 'pg'
+import { ClientErrorCodes } from './errorCodes.js'
 import EventEmitter from 'events'
-import { ClientError, DatabaseError } from './errors'
-import { PgClientFactory } from '../utils'
+import { ClientError, DatabaseError } from './errors.js'
+import { PgClientFactory } from '../utils/index.js'
 
 export type PoolLogger = (message: string, status: PoolStatus) => void
 
@@ -76,7 +76,7 @@ class PoolConnection {
 	public timerId: NodeJS.Timeout | undefined
 
 	constructor(
-		public readonly client: PgClient,
+		public readonly client: pg.Client,
 	) {
 	}
 }

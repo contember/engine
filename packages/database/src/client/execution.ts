@@ -1,6 +1,6 @@
-import { ClientBase } from 'pg'
-import { EventManager } from './EventManager'
-import { Connection } from './Connection'
+import  pg from 'pg'
+import { EventManager } from './EventManager.js'
+import { Connection } from './Connection.js'
 import {
 	QueryError,
 	ForeignKeyViolationError,
@@ -9,8 +9,8 @@ import {
 	SerializationFailureError,
 	TransactionAbortedError,
 	UniqueViolationError,
-} from './errors'
-import { ClientErrorCodes } from './errorCodes'
+} from './errors.js'
+import { ClientErrorCodes } from './errorCodes.js'
 
 function prepareSql(sql: string) {
 	let parameterIndex = 0
@@ -19,7 +19,7 @@ function prepareSql(sql: string) {
 type SomeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export async function executeQuery<Row extends Record<string, any>>(
-	pgClient: ClientBase,
+	pgClient: pg.ClientBase,
 	eventManager: EventManager,
 	{ sql, parameters, meta, timing }: SomeOptional<Connection.Query, 'parameters' | 'meta'> & Connection.QueryConfig,
 	context: Connection.QueryContext = {},

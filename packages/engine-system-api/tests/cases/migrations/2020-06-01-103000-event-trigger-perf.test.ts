@@ -1,4 +1,4 @@
-import migration from '../../../src/migrations/2020-06-01-103000-event-trigger-perf'
+import migration from '../../../src/migrations/2020-06-01-103000-event-trigger-perf.js'
 import { createMigrationBuilder } from '@contember/database-migrations'
 import { sampleProject } from '@contember/engine-api-tester'
 import { test, assert } from 'vitest'
@@ -138,6 +138,14 @@ CREATE TRIGGER "log_event_statement"
   FOR EACH STATEMENT
   EXECUTE PROCEDURE "system"."statement_trigger_event"();
 CREATE TRIGGER "log_event_statement"
+  AFTER INSERT OR UPDATE OR DELETE ON "stage_prod"."entry"
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE "system"."statement_trigger_event"();
+CREATE TRIGGER "log_event_statement"
+  AFTER INSERT OR UPDATE OR DELETE ON "stage_preview"."entry"
+  FOR EACH STATEMENT
+  EXECUTE PROCEDURE "system"."statement_trigger_event"();
+CREATE TRIGGER "log_event_statement"
   AFTER INSERT OR UPDATE OR DELETE ON "stage_prod"."post"
   FOR EACH STATEMENT
   EXECUTE PROCEDURE "system"."statement_trigger_event"();
@@ -151,14 +159,6 @@ CREATE TRIGGER "log_event_statement"
   EXECUTE PROCEDURE "system"."statement_trigger_event"();
 CREATE TRIGGER "log_event_statement"
   AFTER INSERT OR UPDATE OR DELETE ON "stage_preview"."tag"
-  FOR EACH STATEMENT
-  EXECUTE PROCEDURE "system"."statement_trigger_event"();
-CREATE TRIGGER "log_event_statement"
-  AFTER INSERT OR UPDATE OR DELETE ON "stage_prod"."entry"
-  FOR EACH STATEMENT
-  EXECUTE PROCEDURE "system"."statement_trigger_event"();
-CREATE TRIGGER "log_event_statement"
-  AFTER INSERT OR UPDATE OR DELETE ON "stage_preview"."entry"
   FOR EACH STATEMENT
   EXECUTE PROCEDURE "system"."statement_trigger_event"();
 `,

@@ -1,9 +1,8 @@
-import { Path } from './Path'
+import { Path } from './Path.js'
 import { acceptRelationTypeVisitor, getTargetEntity } from '@contember/schema-utils'
 import { Model } from '@contember/schema'
-import { JoinVisitor } from './JoinVisitor'
-import { Operator } from '@contember/database'
-import { SelectBuilder } from '@contember/database'
+import { JoinVisitor } from './JoinVisitor.js'
+import { Operator, SelectBuilder } from '@contember/database'
 
 export class JoinBuilder {
 	constructor(private readonly schema: Model.Schema) {}

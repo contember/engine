@@ -1,14 +1,19 @@
-import { GraphQLBoolean, GraphQLInputObjectType, GraphQLString } from 'graphql'
+import {
+	GraphQLBoolean,
+	GraphQLInputFieldConfig,
+	GraphQLInputFieldConfigMap,
+	GraphQLInputObjectType,
+	GraphQLString,
+} from 'graphql'
 import { Acl, Input, Model } from '@contember/schema'
-import { GqlTypeName } from '../utils'
-import { WhereTypeProvider } from '../WhereTypeProvider'
-import { Accessor, filterObject } from '../../utils'
-import { EntityInputProvider, EntityInputType } from './EntityInputProvider'
-import { GraphQLInputFieldConfig, GraphQLInputFieldConfigMap } from 'graphql/type/definition'
+import { GqlTypeName } from '../utils.js'
+import { WhereTypeProvider } from '../WhereTypeProvider.js'
+import { Accessor, filterObject } from '../../utils/index.js'
+import { EntityInputProvider, EntityInputType } from './EntityInputProvider.js'
 import { acceptFieldVisitor } from '@contember/schema-utils'
-import { UpdateEntityRelationAllowedOperationsVisitor } from './UpdateEntityRelationAllowedOperationsVisitor'
-import { Authorizator } from '../../acl'
-import { ImplementationException } from '../../exception'
+import { UpdateEntityRelationAllowedOperationsVisitor } from './UpdateEntityRelationAllowedOperationsVisitor.js'
+import { Authorizator } from '../../acl/index.js'
+import { ImplementationException } from '../../exception.js'
 
 export class UpdateEntityRelationInputFieldVisitor implements
 	Model.ColumnVisitor<never>,

@@ -1,8 +1,8 @@
-import { Connection } from './Connection'
-import { EventManager } from './EventManager'
-import { ClientBase } from 'pg'
-import { wrapIdentifier } from '../utils'
-import { executeQuery } from './execution'
+import { Connection } from './Connection.js'
+import { EventManager } from './EventManager.js'
+import pg from 'pg'
+import { wrapIdentifier } from '../utils/index.js'
+import { executeQuery } from './execution.js'
 
 export class Transaction implements Connection.TransactionLike {
 	private _isClosed = false
@@ -16,7 +16,7 @@ export class Transaction implements Connection.TransactionLike {
 	}
 
 	constructor(
-		private readonly pgClient: ClientBase,
+		private readonly pgClient: pg.ClientBase,
 		public readonly eventManager: EventManager,
 		private readonly config: Connection.QueryConfig,
 	) {}
@@ -102,7 +102,7 @@ class SavePoint implements Connection.TransactionLike {
 	constructor(
 		public readonly savepointName: string,
 		private readonly transactionInst: Transaction,
-		private readonly pgClient: ClientBase,
+		private readonly pgClient: pg.ClientBase,
 		public readonly eventManager: EventManager,
 	) {}
 

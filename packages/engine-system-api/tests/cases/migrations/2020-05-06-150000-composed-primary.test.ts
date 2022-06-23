@@ -1,4 +1,4 @@
-import migration from '../../../src/migrations/2020-05-06-150000-composed-primary'
+import migration from '../../../src/migrations/2020-05-06-150000-composed-primary.js'
 import { createMigrationBuilder } from '@contember/database-migrations'
 import { sampleProject } from '@contember/engine-api-tester'
 import { test, assert } from 'vitest'
@@ -101,6 +101,16 @@ CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "stage_preview"."author_contact"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"($pga$id$pga$);
+DROP TRIGGER "log_event" ON "stage_prod"."entry";
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "stage_prod"."entry"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"($pga$id$pga$);
+DROP TRIGGER "log_event" ON "stage_preview"."entry";
+CREATE TRIGGER "log_event"
+  AFTER INSERT OR UPDATE OR DELETE ON "stage_preview"."entry"
+  FOR EACH ROW
+  EXECUTE PROCEDURE "system"."trigger_event"($pga$id$pga$);
 DROP TRIGGER "log_event" ON "stage_prod"."post";
 CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "stage_prod"."post"
@@ -119,16 +129,6 @@ CREATE TRIGGER "log_event"
 DROP TRIGGER "log_event" ON "stage_preview"."tag";
 CREATE TRIGGER "log_event"
   AFTER INSERT OR UPDATE OR DELETE ON "stage_preview"."tag"
-  FOR EACH ROW
-  EXECUTE PROCEDURE "system"."trigger_event"($pga$id$pga$);
-DROP TRIGGER "log_event" ON "stage_prod"."entry";
-CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "stage_prod"."entry"
-  FOR EACH ROW
-  EXECUTE PROCEDURE "system"."trigger_event"($pga$id$pga$);
-DROP TRIGGER "log_event" ON "stage_preview"."entry";
-CREATE TRIGGER "log_event"
-  AFTER INSERT OR UPDATE OR DELETE ON "stage_preview"."entry"
   FOR EACH ROW
   EXECUTE PROCEDURE "system"."trigger_event"($pga$id$pga$);
 

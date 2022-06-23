@@ -1,5 +1,5 @@
-import { capitalizeFirstLetter } from '../utils'
-import { GraphQLFieldResolver } from 'graphql/type/definition'
+import { capitalizeFirstLetter } from '../utils/index.js'
+import { GraphQLFieldResolver } from 'graphql'
 
 export const GqlTypeName = (strings: TemplateStringsArray, ...values: string[]) => {
 	return strings.reduce((combined, string, i) => {

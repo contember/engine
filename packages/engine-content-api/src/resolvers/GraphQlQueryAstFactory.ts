@@ -1,4 +1,4 @@
-import { isIt, ResolveInfoUtils } from '../utils'
+import { isIt, ResolveInfoUtils } from '../utils/index.js'
 import {
 	FieldNode as GraphQlFieldNode,
 	FragmentSpreadNode,
@@ -7,11 +7,12 @@ import {
 	GraphQLResolveInfo,
 	isListType,
 	isNonNullType,
-	isObjectType, Kind,
+	isObjectType,
+	SelectionSetNode,
+	Kind,
 } from 'graphql'
-import { SelectionSetNode } from 'graphql/language/ast'
 import { getArgumentValues } from 'graphql/execution/values'
-import { FieldNode, ObjectNode } from '../inputProcessing'
+import { FieldNode, ObjectNode } from '../inputProcessing/index.js'
 import { isDeepStrictEqual } from 'util'
 
 type NodeFilter = (node: GraphQlFieldNode, path: string[]) => boolean
