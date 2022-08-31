@@ -166,6 +166,9 @@ const entitySchema = Typesafe.intersection(
 		})),
 		indexes: indexesSchema,
 		eventLog: eventLogSchema,
+		migrations: Typesafe.coalesce<Model.EntityMigrations, Model.EntityMigrations>(Typesafe.object({
+			enabled: Typesafe.boolean,
+		}), { enabled: true }),
 	}),
 	Typesafe.partial({
 		view: viewSchema,
@@ -174,8 +177,26 @@ const entitySchema = Typesafe.intersection(
 
 const entitySchemaCheck: Typesafe.Equals<Model.Entity, ReturnType<typeof entitySchema>> = true
 
+
+const enumSchema = Typesafe.object({
+	values: Typesafe.array(Typesafe.string),
+	migrations: Typesafe.object({
+		enabled: Typesafe.boolean,
+	}),
+})
+const enumSchemaCheck: Typesafe.Equals<Model.Enum, ReturnType<typeof enumSchema>> = true
+
 export const modelSchema = Typesafe.object({
 	entities: Typesafe.record(Typesafe.string, entitySchema),
-	enums: Typesafe.record(Typesafe.string, Typesafe.array(Typesafe.string)),
+	enums: Typesafe.record(
+		Typesafe.string,
+		Typesafe.union(
+			enumSchema,
+			Typesafe.transform<readonly string[], Model.Enum>(
+				Typesafe.array(Typesafe.string),
+				values => ({ values, migrations: { enabled: true } }),
+			),
+		),
+	),
 })
 

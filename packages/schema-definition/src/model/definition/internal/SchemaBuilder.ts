@@ -31,42 +31,52 @@ export class SchemaBuilder {
 
 			const primaryName = this.conventions.getPrimaryField()
 
+			const fields: Record<string, Model.AnyField> = [
+				...definitionInstance[primaryName] ? [] : [tuple(primaryName, this.createPrimaryColumn())],
+				...Object.entries(definitionInstance),
+			]
+				.map(([name, definition]) => {
+					return definition.createField({
+						name,
+						entityName,
+						conventions: this.conventions,
+						enumRegistry: this.enumRegistry,
+						entityRegistry: this.entityRegistry,
+					})
+				})
+				.reduce<Model.Entity['fields']>((acc, field) => {
+					if (acc[field.name]) {
+						throw new Error(`Entity ${entityName}: field ${field.name} is already registered`)
+					}
+					return { ...acc, [field.name]: field }
+				}, {})
+
 			const entity: Model.Entity = {
 				name: entityName,
 				primary: primaryName,
-				primaryColumn: this.conventions.getColumnName(primaryName),
+				primaryColumn: (fields[primaryName] as Model.AnyColumn).columnName,
 				unique: this.createUnique(entityName, definitionInstance),
+				fields: fields,
 				indexes: {},
-				fields: [
-					...definitionInstance[primaryName] ? [] : [tuple(primaryName, this.createPrimaryColumn())],
-					...Object.entries(definitionInstance),
-				]
-					.map(([name, definition]) => {
-						return definition.createField({
-							name,
-							entityName,
-							conventions: this.conventions,
-							enumRegistry: this.enumRegistry,
-							entityRegistry: this.entityRegistry,
-						})
-					})
-					.reduce<Model.Entity['fields']>((acc, field) => {
-						if (acc[field.name]) {
-							throw new Error(`Entity ${entityName}: field ${field.name} is already registered`)
-						}
-						return { ...acc, [field.name]: field }
-					}, {}),
 				tableName: this.conventions.getTableName(entityName),
-				eventLog: {
-					enabled: true,
-				},
+				eventLog: { enabled: true },
+				migrations: { enabled: true },
 			}
 			return applyEntityExtensions(definition, { entity,  definition: definitionInstance, registry: this.entityRegistry })
 		})
 
 		return {
-			enums: Object.entries(this.enumRegistry.enums).reduce((acc, [name, def]) => ({ ...acc, [name]: def.values }), {}),
-			entities: entities.reduce((acc, entity) => ({ ...acc, [entity.name]: entity }), {}),
+			enums: Object.fromEntries(
+				Object.entries(this.enumRegistry.enums).map(([name, def]) => [
+					name,
+					{
+						values: def.values,
+						migrations: def.migrations,
+					},
+				],
+				),
+			),
+			entities: Object.fromEntries(entities.map(entity => [entity.name, entity])),
 		}
 	}
 

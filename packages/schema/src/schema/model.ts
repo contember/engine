@@ -12,6 +12,11 @@ export namespace Model {
 		readonly indexes: Indexes
 		readonly view?: View
 		readonly eventLog: EventLogConfig
+		readonly migrations: EntityMigrations
+	}
+
+	export type EntityMigrations = {
+		readonly enabled: boolean
 	}
 
 	export type View = {
@@ -264,8 +269,18 @@ export namespace Model {
 	/** @deprecated */
 	export type ManyHasManyOwnerRelation = ManyHasManyOwningRelation
 
+	export type Enum = {
+		readonly values: readonly string[]
+		readonly migrations: EnumMigrations
+	}
+
+	export type EnumMigrations = {
+		readonly enabled: boolean
+	}
+
+
 	export type Schema = {
-		readonly enums: { readonly [name: string]: readonly string[] }
+		readonly enums: { readonly [name: string]: Enum }
 		readonly entities: { readonly [name: string]: Entity }
 	}
 

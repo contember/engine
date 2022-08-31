@@ -8,7 +8,7 @@ import ManyHasManyProcessor from './internal/ManyHasManyProcessor'
 import OneHasOneProcessor from './internal/OneHasOneProcessor'
 import OneHasManyProcessor from './internal/OneHasManyProcessor'
 import ManyHasOneProcessor from './internal/ManyHasOneProcessor'
-import { NamingConventions } from './../definition/NamingConventions'
+import { NamingConventions } from '../definition/NamingConventions'
 import FieldBuilder from './FieldBuilder'
 
 export default class SchemaBuilderInternal {
@@ -16,7 +16,7 @@ export default class SchemaBuilderInternal {
 
 	private fieldOptions: { [entity: string]: FieldBuilder.Map } = {}
 
-	private enums: { [name: string]: string[] } = {}
+	private enums: { [name: string]: Model.Enum } = {}
 
 	constructor(private readonly conventions: NamingConventions) {}
 
@@ -41,14 +41,13 @@ export default class SchemaBuilderInternal {
 			fields: {},
 			indexes: {},
 			tableName: options.tableName || this.conventions.getTableName(name),
-			eventLog: {
-				enabled: true,
-			},
+			eventLog: { enabled: true },
+			migrations: { enabled: true },
 		}
 	}
 
 	public addEnum(name: string, values: string[]): void {
-		this.enums[name] = values
+		this.enums[name] = { values, migrations: { enabled: true } }
 	}
 
 	public createSchema(): Model.Schema {

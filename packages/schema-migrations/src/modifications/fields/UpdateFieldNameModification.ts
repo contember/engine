@@ -13,26 +13,24 @@ import {
 	updateModel,
 	updateSchema,
 } from '../utils/schemaUpdateUtils'
-import { ModificationHandler, ModificationHandlerOptions, ModificationHandlerStatic } from '../ModificationHandler'
+import { createModificationType, ModificationHandler, ModificationHandlerOptions } from '../ModificationHandler'
 import { acceptFieldVisitor, NamingHelper, PredicateDefinitionProcessor } from '@contember/schema-utils'
 import { VERSION_ACL_PATCH, VERSION_UPDATE_CONSTRAINT_NAME } from '../ModificationVersions'
 import { renameConstraintSchemaUpdater, renameConstraintsSqlBuilder } from '../utils/renameConstraintsHelper'
 import { changeValue } from '../utils/valueUtils'
-import { UpdateColumnNameModification } from '../columns'
+import { updateColumnNameModification } from '../columns'
 import { NoopModification } from '../NoopModification'
 
-export const UpdateFieldNameModification: ModificationHandlerStatic<UpdateFieldNameModificationData> = class {
-	static id = 'updateFieldName'
-
+export class UpdateFieldNameModificationHandler implements ModificationHandler<UpdateFieldNameModificationData> {
 	private renameColumnSubModification: ModificationHandler<any> = new NoopModification()
 
 	constructor(
-		private readonly data: UpdateFieldNameModificationData,
-		private readonly schema: Schema,
+		protected readonly data: UpdateFieldNameModificationData,
+		protected readonly schema: Schema,
 		private readonly options: ModificationHandlerOptions,
 	) {
 		if (this.data.columnName) {
-			this.renameColumnSubModification = new UpdateColumnNameModification({
+			this.renameColumnSubModification = updateColumnNameModification.createHandler({
 				entityName: this.data.entityName,
 				columnName: this.data.columnName,
 				fieldName: this.data.fieldName,
@@ -192,10 +190,6 @@ export const UpdateFieldNameModification: ModificationHandlerStatic<UpdateFieldN
 	describe() {
 		return { message: `Change field name ${this.data.entityName}.${this.data.fieldName} to ${this.data.newFieldName}` }
 	}
-
-	static createModification(data: UpdateFieldNameModificationData) {
-		return { modification: this.id, ...data }
-	}
 }
 
 export interface UpdateFieldNameModificationData {
@@ -204,3 +198,8 @@ export interface UpdateFieldNameModificationData {
 	newFieldName: string
 	columnName?: string
 }
+
+export const updateFieldNameModification = createModificationType({
+	id: 'updateFieldName',
+	handler: UpdateFieldNameModificationHandler,
+})
