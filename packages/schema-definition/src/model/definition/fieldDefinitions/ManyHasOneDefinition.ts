@@ -33,6 +33,10 @@ export class ManyHasOneDefinitionImpl extends FieldDefinition<ManyHasOneDefiniti
 		return this.withOption('nullable', false)
 	}
 
+	public description(description: string): Interface<ManyHasOneDefinition> {
+		return this.withOption('description', description)
+	}
+
 	createField({ name, conventions, entityName, entityRegistry, strictDefinitionValidator }: CreateFieldContext): Model.AnyField {
 		const options = this.options
 		const joiningColumn = options.joiningColumn || {}
@@ -49,6 +53,7 @@ export class ManyHasOneDefinitionImpl extends FieldDefinition<ManyHasOneDefiniti
 				columnName: joiningColumn.columnName || conventions.getJoiningColumnName(name),
 				onDelete: joiningColumn.onDelete || Model.OnDelete.restrict,
 			},
+			...(options.description ? { description: options.description } : {}),
 		}
 	}
 }
@@ -64,4 +69,5 @@ export type ManyHasOneDefinitionOptions = {
 	inversedBy?: string
 	joiningColumn?: Partial<Model.JoiningColumn>
 	nullable?: boolean
+	description?: string
 }
