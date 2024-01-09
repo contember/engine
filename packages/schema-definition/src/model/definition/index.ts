@@ -9,6 +9,7 @@ import { DefaultNamingConventions } from '@contember/schema-utils'
 import { StrictOptions, StrictDefinitionValidator } from '../../strict'
 
 export * from './fieldDefinitions'
+export * from './DescriptionDefinition'
 export * from './EventLogDefinition'
 export * from './IndexDefinition'
 export * from './OrderByDefinition'
