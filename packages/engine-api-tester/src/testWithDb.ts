@@ -1,7 +1,7 @@
 import { Schema } from '@contember/schema'
 import { ModificationHandlerFactory, SchemaDiffer, SchemaMigrator, VERSION_LATEST } from '@contember/schema-migrations'
 import { AllowAllPermissionFactory, emptySchema, Providers } from '@contember/schema-utils'
-import { Client, DatabaseMetadataResolver, SelectBuilder, emptyDatabaseMetadata } from '@contember/database'
+import { Client, DatabaseMetadataResolver, emptyDatabaseMetadata, SelectBuilder } from '@contember/database'
 import { assert } from 'vitest'
 import { createLogger, NullLoggerHandler, withLogger } from '@contember/logger'
 import {
@@ -21,7 +21,7 @@ import {
 	SystemMigrationsRunner,
 } from '@contember/engine-system-api'
 import { createConnection, dbCredentials, recreateDatabase } from './dbUtils'
-import { GraphQLSchema, graphql } from 'graphql'
+import { graphql } from 'graphql'
 
 type DatabaseExpectation = Record<string, Record<string, any>[]>
 type Test = {
@@ -86,7 +86,7 @@ export const executeDbTest = async (test: Test) => {
 	const systemMigrationsRunner = new SystemMigrationsRunner(
 		databaseContextFactory,
 		projectConfigWithDb,
-		systemContainer.schemaVersionBuilder,
+		systemContainer.schemaProvider,
 		test.migrationGroups ?? {},
 		{
 			resolveMetadata: () => Promise.resolve(emptyDatabaseMetadata),
@@ -140,7 +140,8 @@ export const executeDbTest = async (test: Test) => {
 		const queryContent = async (stageSlug: string, gql: string, variables?: { [key: string]: any }): Promise<any> => {
 			const executionContainer = (test.executionContainerFactoryFactory?.(providers) ?? new ExecutionContainerFactory(providers))
 				.create({
-					schema: { ...schema, id: 1 },
+					schema,
+					schemaMeta: { id: 1 },
 					permissions,
 					db: projectDb,
 					identityId: '00000000-0000-0000-0000-000000000000',
