@@ -26,6 +26,7 @@ import _20230911174000fixondelete from './2023-09-11-174000-fix-on-delete'
 import _20231019173000fixunique from './2023-10-19-173000-fix-unique'
 import _20231024140000schemanullablechecksum from './2023-10-24-140000-schema-nullable-checksum'
 import _20240628150000migrationsdropsequence from './2024-06-28-150000-migrations-drop-sequence'
+import _20240729150000eventdataindex from './2024-07-29-150000-event-data-index'
 import snapshot from './snapshot'
 
 import { Connection, createDatabaseIfNotExists, DatabaseConfig, DatabaseMetadataResolver } from '@contember/database'
@@ -56,6 +57,7 @@ const migrations = {
 	'2023-10-19-173000-fix-unique': _20231019173000fixunique,
 	'2023-10-24-140000-schema-nullable-checksum': _20231024140000schemanullablechecksum,
 	'2024-06-28-150000-migrations-drop-sequence': _20240628150000migrationsdropsequence,
+	'2024-07-29-150000-event-data-index': _20240729150000eventdataindex,
 }
 
 
